@@ -2,7 +2,7 @@ const wordContainer = document.getElementById("wordContainer");
 const alphabetDiv = document.getElementById("alphabetButtons");
 const searchInput = document.getElementById("searchBar");
 
-
+/* YOUR WORD DATABASE */
 const dictionary = {
 abandon:"to leave something completely",
 ability:"the power or skill to do something",
@@ -2667,39 +2667,56 @@ zoomspeed:"speed of zooming",
 zoomview:"enlarged view"
 };
 
+/* TOTAL WORD COUNT */
 const totalWords = Object.keys(dictionary).length;
 document.getElementById("wordCount").textContent = totalWords;
 
+
+/* DISPLAY WORDS */
 function displayWords(wordsArray) {
+
     wordContainer.innerHTML = "";
 
-    if (wordsArray.length === 0) {
-        wordContainer.innerHTML = "<p>No words found.</p>";
+    if(wordsArray.length === 0){
+        wordContainer.innerHTML = "<p>No words found</p>";
         return;
     }
 
     wordsArray.forEach(word => {
-        let card = document.createElement("div");
+
+        const card = document.createElement("div");
         card.className = "word-card";
-        card.innerHTML = `<h3>${word}</h3><p>${dictionary[word]}</p>`;
+
+        card.innerHTML = `
+            <h3>${word}</h3>
+            <p>${dictionary[word]}</p>
+        `;
+
         wordContainer.appendChild(card);
+
     });
 }
 
-function searchWord() {
-    let value = searchInput.value.toLowerCase();
 
-    let filtered = Object.keys(dictionary)
+/* SEARCH FUNCTION */
+function searchWord(){
+
+    const value = searchInput.value.toLowerCase();
+
+    const filtered = Object.keys(dictionary)
         .filter(word => word.includes(value))
         .sort();
 
     displayWords(filtered);
 }
 
-function filterByLetter(letter) {
+
+/* LETTER FILTER */
+function filterByLetter(letter){
+
     searchInput.value = "";
 
-    let filtered = Object.keys(dictionary)
+    const filtered = Object.keys(dictionary)
         .filter(word => word.startsWith(letter.toLowerCase()))
         .sort();
 
@@ -2708,11 +2725,13 @@ function filterByLetter(letter) {
 
 searchInput.addEventListener("input", searchWord);
 
-/* CREATE A-Z BUTTONS */
-for(let i = 65; i <= 90; i++) {
-    let letter = String.fromCharCode(i);
 
-    let btn = document.createElement("button");
+/* CREATE A-Z BUTTONS */
+for(let i = 65; i <= 90; i++){
+
+    const letter = String.fromCharCode(i);
+
+    const btn = document.createElement("button");
     btn.innerText = letter;
 
     btn.onclick = () => filterByLetter(letter);
@@ -2720,4 +2739,6 @@ for(let i = 65; i <= 90; i++) {
     alphabetDiv.appendChild(btn);
 }
 
+
+/* SHOW ALL WORDS ON LOAD */
 displayWords(Object.keys(dictionary).sort());
